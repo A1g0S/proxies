@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+
+URL= "https://free-proxy-list.net/"
+PATH= "/opt/proxychains/settings.conf"
+
+import requests
+from bs4 import BeautifulSoup
+
+
+page = requests.get(URL,verify=False)
+soup = BeautifulSoup(page.content, "html.parser")
+results=soup.find("div",class_="modal-body")
+results=results.text
+
+
+f = open(PATH,"r")
+proxies = f.readlines()
+f.close()
+
+result = proxies[0][:0]+"#"+proxies[0] + proxies[1][:0] + "#" + proxies[1]
+
+iter = proxies[3:320]
+for proxy in iter:
+  proxy = proxy.replace('\n','')
+  proxy = proxy.replace(":"," ")
+  print("socks5 "+proxy)
+
+
